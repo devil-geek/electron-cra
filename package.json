@@ -2,16 +2,24 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
+  "main": "public/electron.js",
   "dependencies": {
+    "electron-is-dev": "^1.1.0",
+    "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start-react": "react-scripts start",
+    "build-react": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "postinstall": "electron-builder install-app-deps",
+    "predist": "npm run build-react",
+    "dist": "build",
+    "launch": "wait-on http://localhost:3000 && electron .",
+    "start": "run-p -r start-react launch"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,5 +35,31 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^5.0.1",
+    "electron-builder": "^20.40.2",
+    "npm-run-all": "^4.1.5",
+    "wait-on": "^3.2.0"
+  },
+  "author": {
+    "name": "Car OJ - Devil Geek",
+    "email": "car.oj@hotmail.com",
+    "url": "https://devil-geek.com"
+  },
+  "build": {
+    "appId": "com.devil-geek.my-app",
+    "productName": "MyApp",
+    "copyright": "Copyright © 2019 ${author}",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   }
 }
