@@ -6,12 +6,10 @@
   "main": "public/electron.js",
   "dependencies": {
     "electron-is-dev": "^1.1.0",
-    "fsevents": "^2.0.7",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
-    "typescript": "^3.5.3"
+    "react-scripts": "3.0.1"
   },
   "scripts": {
     "start-react": "react-scripts start",
@@ -21,10 +19,70 @@
     "predist": "npm run build-react",
     "dist": "build",
     "launch": "wait-on http://localhost:3000 && electron .",
-    "start": "run-p -r start-react launch"
+    "start": "run-p -r start-react launch",
+    "precommit": "NODE_ENV=production lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "pretty-quick --staged",
+      "eslint src/ --fix",
+      "git add"
+    ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "airbnb",
+      "prettier",
+      "prettier/react"
+    ],
+    "plugins": [
+      "prettier",
+      "jest"
+    ],
+    "env": {
+      "jest": true
+    },
+    "rules": {
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ],
+      "react/prop-types": 1,
+      "import/imports-first": [
+        "error",
+        "absolute-first"
+      ],
+      "import/newline-after-import": "error",
+      "react/state-in-constructor": [
+        1,
+        "always"
+      ],
+      "react/button-has-type": 0,
+      "no-console": "off",
+      "no-restricted-syntax": [
+        "error",
+        {
+          "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(warn|error|info|trace)$/]",
+          "message": "Unexpected property on console object was called"
+        }
+      ],
+      "consistent-return": 0
+    },
+    "globals": {
+      "window": true,
+      "document": true,
+      "localStorage": true,
+      "FormData": true,
+      "FileReader": true,
+      "Blob": true,
+      "navigator": true
+    },
+    "parser": "babel-eslint"
   },
   "browserslist": {
     "production": [
@@ -41,7 +99,21 @@
   "devDependencies": {
     "electron": "^5.0.1",
     "electron-builder": "^20.40.2",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.15.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "fsevents": "^2.0.7",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.4",
     "npm-run-all": "^4.1.5",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "typescript": "^3.5.3",
     "wait-on": "^3.2.0"
   },
   "author": {
@@ -63,5 +135,8 @@
     "directories": {
       "buildResources": "assets"
     }
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
